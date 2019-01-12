@@ -128,7 +128,7 @@ print('Descriptions: test=%d' % len(test_descriptions))
 test_features = load_photo_features('features.pkl', test)
 print('Photos: test=%d' % len(test_features))
 # load the model
-filename = 'model128D5E1L0001.h5'
+filename = 'model.h5'
 model = load_model(filename)
 # evaluate model
 evaluate_model(model, test_descriptions, test_features, tokenizer, max_length)
