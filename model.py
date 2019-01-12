@@ -179,12 +179,12 @@ def define_model(vocab_size, max_length):
 	layers =128 # 64 256 512
 	# feature extractor model
 	inputs1 = Input(shape=(4096,))
-	fe1 = Dropout(0.5)(inputs1)
+	fe1 = Dropout(0.5)(inputs1)#0.2 0.8
 	fe2 = Dense(layers, activation='relu')(fe1)
 	# sequence model
 	inputs2 = Input(shape=(max_length,))
 	se1 = Embedding(vocab_size, layers, mask_zero=True)(inputs2)
-	se2 = Dropout(0.5)(se1)
+	se2 = Dropout(0.5)(se1)#0.2 0.8
 	se3 = LSTM(layers)(se2)
 	# decoder model
 	decoder1 = add([fe2, se3])
@@ -193,10 +193,10 @@ def define_model(vocab_size, max_length):
 	# tie it together [image, seq] [word]
 	model = Model(inputs=[inputs1, inputs2], outputs=outputs)
 	# compile model
-	model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=0.001))
+	model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=0.001)) #0.01 0.0001
 	# summarize model
 	model.summary()
-	#plot_model(model, to_file='model128D5L001.png', show_shapes=True)
+	plot_model(model, to_file='model.png', show_shapes=True)
 	return model
 
 # data generator, intended to be used in a call to model.fit_generator()
@@ -250,6 +250,6 @@ generator = data_generator(train_descriptions, train_features, tokenizer, max_le
 steps = len(train_descriptions)
 model.fit_generator(generator, epochs=1, steps_per_epoch=steps, verbose=1)
 # save model
-model.save('model128D5E1L0001.h5')
+model.save('model.h5')
     
 
